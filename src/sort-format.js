@@ -5,6 +5,7 @@ const dayjs = require('dayjs');
 const content = fs.readFileSync('README_RAW.md').toString();
 const time = dayjs().format('YYYY-MM-DD HH:mm:ss Z');
 
+// Add icon
 const addIcon = (text) => {
   const icons = [];
   const types = text.split('|');
@@ -77,10 +78,24 @@ const addIcon = (text) => {
     if (['go', 'golang'].includes(type.toLowerCase())) {
       icons.push('![Go](svg/go.svg?raw=true)');
     }
+    if (['web'].includes(type.toLowerCase())) {
+      icons.push('![Web](svg/edge.svg?raw=true)');
+    }
+    if (['android'].includes(type.toLowerCase())) {
+      icons.push('![Android](svg/android.svg?raw=true)');
+    }
+    if (['linux'].includes(type.toLowerCase())) {
+      icons.push('![Linux](svg/linux.svg?raw=true)');
+    }
+    if (['apple', 'mac', 'ios'].includes(type.toLowerCase())) {
+      icons.push('![MacOS](svg/apple.svg?raw=true)');
+    }
   }
   return icons.join(' ');
 }
 const [header, toc, mainText] = content.split('---');
+
+// Sort & format
 const sortedMainText = mainText.split(/(\r?\n){2}/g).map(text => {
   text = text.replace(/\r/g, '');
   if (/^- /.test(text)) {
@@ -99,4 +114,4 @@ const sortedMainText = mainText.split(/(\r?\n){2}/g).map(text => {
 }).join('\n') + '\n<!-- Sort Time: ' + time + ' -->\n';
 
 fs.writeFileSync('README.md', [header, toc, sortedMainText].join('---'));
-fs.writeFileSync('message.txt', 'Sort at ' + time);
+fs.writeFileSync('message.txt', 'Sort at ' + time + '\n\n' + fs.readFileSync('CHANGELOG.md').toString());
